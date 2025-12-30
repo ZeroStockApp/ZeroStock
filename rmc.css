@@ -1867,30 +1867,60 @@ input[type="number"],
     background-color: #fdebf3; /* rosadito suave */
 }
 
-/* ===============================
-   IMPRESIÓN: quitar padding del body
-   Motivo:
-   - El padding del body suma mm extra
-   - En pantalla lo queremos
-   - En impresión provoca recorte
-   =============================== */
+/* =========================================================
+   FIX IMPRESIÓN/PDF — Evita recortes sin tocar "escala"
+   Pegar AL FINAL del CSS
+   ========================================================= */
+
+/* 1) Le decimos al navegador qué márgenes usar al imprimir.
+      Esto crea “aire” seguro para que NO corte el contenido. */
+@page {
+  size: A4;
+  margin: 10mm; /* puedes dejarlo así: NO es escala, es margen de página */
+}
+
+/* 2) Estilos SOLO cuando se imprime */
 @media print {
+
+  /* Quitamos padding del body (en pantalla tienes padding:30px) para que no empuje
+     el contenido hacia los bordes imprimibles. */
   body {
     margin: 0 !important;
     padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* 3) El contenedor no debe “encajonar” ni meter sombras en impresión */
+  #contenedor {
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* 4) CLAVE: en impresión NO uses 200mm fijo.
+        100% se adapta al área imprimible real y evita el corte. */
+  body.pdf-full #pdf {
+    width: 100% !important;     /* <-- reemplaza el 200mm en modo print */
+    margin: 0 !important;
+    padding: 0 !important;      /* evita sumar mm extra que puedan cortar */
+    border: none !important;    /* el borde también suma y puede empujar */
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  /* 5) Tabla estable (para que no se desborde horizontalmente) */
+  body.pdf-full #pdf table {
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  /* 6) Seguridad extra: evita que el navegador corte filas “a la mala” */
+  tr, td, th {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }
-
-/* ===============================
-   IMPRESIÓN: márgenes reales del papel
-   Motivo:
-   - Las impresoras NO imprimen a borde
-   - Esto define el área segura
-   - Evita cortes silenciosos
-   =============================== */
-@page {
-  size: A4;
-  margin: 10mm;
-}
-
 
