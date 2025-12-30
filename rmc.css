@@ -688,10 +688,10 @@ body.pdf-full #contenedor {
 }
 
 body.pdf-full #pdf {
-  width: 200mm !important;     /* ancho útil */
-  margin: 0 auto !important;   /* centrado */
-  padding: 2mm !important;     /* margen interno */
-  border: 1px solid #ddd;      /* opcional */
+  width: 190mm !important;     /* Lo achicamos un poco para que Adobe no lo corte */
+  margin: 0 auto !important;   
+  padding: 0 !important;       
+  border: none !important;      
 }
 
 body.pdf-full #pdf table {
