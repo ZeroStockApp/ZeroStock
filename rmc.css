@@ -1933,28 +1933,40 @@ input[type="number"],
   }
 }
 
-/* --- NUEVO AJUSTE DE SEGURIDAD PARA EL PDF --- */
+/* === AJUSTE MAESTRO PARA EVITAR CORTE DERECHO === */
 body.pdf-full #pdf {
-  width: 255mm !important;       /* Un poco más angosto para que no se corte */
-  max-width: 255mm !important;
-  margin: 10mm auto !important;  /* Margen visual de seguridad */
-  padding: 0 !important;
-  border: none !important;
+  width: 260mm !important;      /* Ancho fijo para paisaje (landscape) */
+  max-width: 260mm !important;
+  margin: 0 auto !important;
+  padding: 5mm !important;      /* Espacio interno de seguridad */
   background-color: white !important;
   box-sizing: border-box !important;
 }
 
-/* Forzamos a la tabla a no estirarse */
+/* Forzar que la tabla ocupe el 100% de esos 260mm, ni un milímetro más */
 body.pdf-full #pdf table {
   width: 100% !important;
   table-layout: fixed !important; 
   border-collapse: collapse !important;
 }
 
-/* Achicamos las columnas de las tallas para ganar espacio a la derecha */
-#pdf table th:nth-child(n+4),
-#pdf table td:nth-child(n+4) {
-    width: 22px !important; 
-    font-size: 10px !important;
-    padding: 2px !important;
+/* Ajuste de columnas para que no se empujen entre sí */
+body.pdf-full #pdf th, 
+body.pdf-full #pdf td {
+  word-wrap: break-word !important;
+  font-size: 10pt !important;
+  padding: 4px !important;
+}
+
+/* Hacemos las columnas de tallas muy delgadas para dar aire a la derecha */
+body.pdf-full #pdf table th:nth-child(n+4),
+body.pdf-full #pdf table td:nth-child(n+4) {
+  width: 18px !important;
+}
+
+/* Ocultar botones y cosas que estorben en el PDF */
+body.pdf-full #box-botones, 
+body.pdf-full .col-4, 
+body.pdf-full .col-5 {
+  display: none !important;
 }
