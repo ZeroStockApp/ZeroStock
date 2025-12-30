@@ -8,16 +8,17 @@ function generarPDF() {
 
     // 3. AQUÍ CONTROLAS LOS MÁRGENES Y EL TAMAÑO
     const opciones = {
-        margin:       10,        // Margen de 10mm (1 centímetro) alrededor de toda la hoja
-        filename:     nombreArchivo,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-        jsPDF:        { 
-            unit: 'mm', 
-            format: 'letter',    // Tamaño Carta
-            orientation: 'landscape' // Horizontal
-        }
-    };
+  margin: [10, 10, 10, 10],  // 🔹 Margen de 1cm en todos los lados
+  filename: 'informe.pdf',
+  image: { type: 'jpeg', quality: 1 },
+  html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+  jsPDF: {
+    unit: 'mm',
+    format: 'letter',
+    orientation: 'landscape'
+  }
+};
+
 
     // 4. Instrucción para crear y descargar el PDF
     html2pdf().set(opciones).from(elemento).save();
