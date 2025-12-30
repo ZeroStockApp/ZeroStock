@@ -1923,3 +1923,36 @@ input[type="number"],
     text-align: right !important;
   }
 }
+
+/* === SOLUCIÓN DEFINITIVA: EL "CORSÉ" PARA LA TABLA === */
+
+/* 1. Obligamos a la tabla a no estirarse más del 100% del papel */
+#pdf table {
+    table-layout: fixed !important; /* Esto es la clave: impide que la tabla crezca sola */
+    width: 100% !important;
+}
+
+/* 2. Controlamos la columna del NOMBRE DEL PRODUCTO (la que suele dar problemas) */
+/* Le damos un 30% del espacio y obligamos al texto a bajar de renglón si es largo */
+#pdf table th:nth-child(2),
+#pdf table td:nth-child(2) {
+    width: 30% !important;
+    white-space: normal !important; /* Permite que el texto baje a otra línea */
+    word-wrap: break-word !important; /* Corta la palabra si es gigante */
+}
+
+/* 3. Las columnas de las TALLAS (PP, P, M...) las hacemos pequeñitas */
+/* Afecta desde la columna 4 en adelante */
+#pdf table th:nth-child(n+4),
+#pdf table td:nth-child(n+4) {
+    width: 5% !important; /* Ancho fijo y pequeño para cada talla */
+    padding: 2px !important;
+    font-size: 11px !important; /* Letra un poco más chica para que quepan bien */
+}
+
+/* 4. Aseguramos que el contenedor del PDF no tenga márgenes locos */
+#pdf {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
