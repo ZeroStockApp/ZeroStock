@@ -958,7 +958,7 @@ document.body.classList.add('pdf-full');
 const esTallas = (tipoInforme.value === "1" || tipoInforme.value === "3");
 // === (1) MÁRGENES BASE PARA PDF (según tallas) ===
 const bottomMargin = esTallas ? 14 : 16; // si luego quieres 16/18, cambia aquí
-const PDF_MARGIN_TALLAS = [8, 6, bottomMargin, 6];
+const PDF_MARGIN_TALLAS = [8, 12, bottomMargin, 12];
 const PDF_MARGIN_NORMAL = [12, 10, bottomMargin, 10];
 
 
@@ -2062,6 +2062,7 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
 
 
 
