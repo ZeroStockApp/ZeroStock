@@ -1866,3 +1866,31 @@ input[type="number"],
 #tabla table tbody tr:nth-child(even) {
     background-color: #fdebf3; /* rosadito suave */
 }
+
+/* ===============================
+   IMPRESIÓN: quitar padding del body
+   Motivo:
+   - El padding del body suma mm extra
+   - En pantalla lo queremos
+   - En impresión provoca recorte
+   =============================== */
+@media print {
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* ===============================
+   IMPRESIÓN: márgenes reales del papel
+   Motivo:
+   - Las impresoras NO imprimen a borde
+   - Esto define el área segura
+   - Evita cortes silenciosos
+   =============================== */
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+
