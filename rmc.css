@@ -688,14 +688,15 @@ body.pdf-full #contenedor {
 }
 
 body.pdf-full #pdf {
-  width: 270mm !important;       /* 🔹 Ancho fijo para que NO se corte */
-  max-width: 270mm !important;   /* 🔹 Máximo recomendado para A4 horizontal */
+  width: 260mm !important;       /* 🔹 Un poco menos de Letter para evitar cortes */
+  max-width: 260mm !important;
   margin: 0 auto !important;
   padding: 0 !important;
   border: none !important;
-  overflow: hidden !important;   /* 🔹 Oculta lo que se salga */
-  box-sizing: border-box !important; /* 🔹 Incluye padding en el cálculo de ancho */
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
+
 
 
 body.pdf-full #pdf table {
