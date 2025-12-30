@@ -1895,3 +1895,7 @@ input[type="number"],
   }
 }
 
+@media print {
+  body { zoom: 0.95; }
+}
+
