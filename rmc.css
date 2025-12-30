@@ -1867,71 +1867,59 @@ input[type="number"],
     background-color: #fdebf3; /* rosadito suave */
 }
 
-/* =====================================================
-   IMPRESIÓN PARA PAPEL CARTA (Letter)
-   - La impresora usa CARTA, no A4
-   - Evita que se corte el TOTAL abajo
-   - NO usa escala
-   ===================================================== */
-@media print {
-
-  @page {
-    size: Letter landscape; /* Papel CARTA horizontal */
-    margin-top: 12mm;
-    margin-left: 10mm;
-    margin-right: 10mm;
-    margin-bottom: 18mm; /* MÁS margen abajo para el TOTAL */
-  }
-
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  #pdf {
-    box-sizing: border-box !important;
-    padding-bottom: 6mm !important; /* colchón extra */
-    overflow: visible !important;
-  }
-}
-
+/* === CONFIGURACIÓN ÚNICA DE IMPRESIÓN === */
 @media print {
   @page {
-    size: letter landscape; /* Forzamos horizontal en papel carta */
-    margin: 0.5cm !important;
+    size: letter landscape; /* Papel Carta Horizontal */
+    margin: 1cm !important;  /* Margen de seguridad para que la impresora no corte nada */
   }
 
-  body { 
-    zoom: normal !important; 
+  body, html {
+    background-color: white !important;
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
-    font-size: 10pt !important; /* Achicamos la letra general */
   }
 
-  #contenedor {
+  /* El contenedor NO debe tener un ancho fijo en mm, debe ser 100% */
+  #contenedor, body.pdf-full #contenedor {
     max-width: 100% !important;
     width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
-    border: none !important;
     box-shadow: none !important;
+    border: none !important;
   }
 
-  /* Reducimos el tamaño de la tabla para que quepa */
+  /* Ajuste del área del PDF */
+  #pdf, body.pdf-full #pdf {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  /* Forzamos a que la tabla se encoja para caber en el papel */
   table {
     width: 100% !important;
-    table-layout: fixed !important; /* Obliga a las columnas a no estirarse */
-    font-size: 9pt !important;     /* Letra de la tabla aún más pequeña */
+    table-layout: auto !important; /* Permite que las columnas se ajusten al contenido */
+    font-size: 9pt !important;    /* Letra un poco más pequeña para asegurar espacio */
   }
 
   th, td {
-    padding: 4px 2px !important;   /* Menos espacio entre celdas */
-    word-wrap: break-word !important;
+    padding: 4px !important;
+    border: 1px solid #ddd !important;
   }
 
-  /* Ajustamos anchos específicos para que el nombre del producto no empuje todo */
-  .col-1 { width: 10%; } /* Código */
-  .col-2 { width: 25%; } /* Producto */
-  .col-3 { width: 8%; }  /* Cantidad */
+  /* Ocultamos los botones para que no salgan en la impresión */
+  #box-botones, .col-4, .col-5 {
+    display: none !important;
+  }
+
+  /* Aseguramos que el total se vea y no se corte */
+  #total {
+    margin-top: 10px !important;
+    width: 100% !important;
+    text-align: right !important;
+  }
 }
