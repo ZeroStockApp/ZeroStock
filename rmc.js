@@ -971,17 +971,36 @@ const PDF_MARGIN_NORMAL = [12, 10, bottomMargin, 10];
         {   
             var element = pdf;            
             var nombrePDF = textoTipoInforme.substring(0,3).toUpperCase()+'-'+textoSemana+'-'+textoDistribuidor.toUpperCase();
+const ZEBRA_PINK = '#faeaf1'; // el rosita de tus filas
+
 const opt = {
   // [top, right, bottom, left] en milímetros
-    margin: esTallas ? PDF_MARGIN_TALLAS : PDF_MARGIN_NORMAL,
+  margin: esTallas ? PDF_MARGIN_TALLAS : PDF_MARGIN_NORMAL,
   filename: buildPdfFilename(),
   image: { type: 'jpeg', quality: 0.98 },
-  html2canvas: { scale: 3 },
+
+  html2canvas: {
+    scale: 3,
+    useCORS: true,
+    backgroundColor: '#ffffff',
+
+    // 👇 CLAVE: pintamos zebra en el DOM CLONADO que html2canvas realmente captura
+    onclone: (clonedDoc) => {
+      const tabla = clonedDoc.querySelector('#pdf table');
+      if (!tabla) return;
+
+      const filas = tabla.querySelectorAll('tbody tr');
+      filas.forEach((fila, i) => {
+        fila.style.backgroundColor = (i % 2 === 0) ? '#ffffff' : ZEBRA_PINK;
+      });
+    }
+  },
+
   jsPDF: { unit: 'mm', format: 'a4', orientation: esTallas ? 'landscape' : 'portrait' },
   pagebreak: { mode: ['css','legacy'] }
 };
 
-            
+          
             sortTable(tabla);
             ocultarColumna('none', 'block');
 
@@ -1413,29 +1432,48 @@ tablaNueva.appendChild(thead);
 
     const qty = r.cells[2].innerText.trim();
 
-    const sizes = { pp:0,p:0,m:0,g:0,gg:0,egg:0,exgg:0,u:0 };
-    const dataset = r.cells[2].dataset.tallas;
-    if (dataset) {
-      dataset.split(',').forEach(par => {
-        const parts = par.split(':');
-        if (parts.length >= 2) {
-          const k = (parts[0]||'').trim().toUpperCase();
-          const v = parseInt((parts[1]||'').trim(), 10);
-          const key = mapKey[k];
-          if (key && !isNaN(v)) sizes[key] = v;
-        }
-      });
+    const sizes = { pp:'', p:'', m:'', g:'', gg:'', egg:'', exgg:'', u:'' };
+
+const dataset = r.cells[2].dataset.tallas;
+if (dataset) {
+  const pares = dataset.split(',');
+  pares.forEach(par => {
+    const [tallaRaw, valorRaw] = par.split(':');
+    if (!tallaRaw || !valorRaw) return;
+
+    const talla = tallaRaw.trim().toUpperCase();
+    const valor = parseInt(valorRaw.trim(), 10);
+
+    const key = mapKey[talla];
+    if (key && !isNaN(valor) && valor > 0) {
+      sizes[key] = valor.toString();
     }
+  });
+}
 
     const divTrWrapper = document.createElement('div');
 divTrWrapper.style.breakInside = 'avoid';
 divTrWrapper.style.pageBreakInside = 'avoid';
 const tr = document.createElement('tr');
     aplicarAntiCorte(tr);
+
+    // --- EFECTO ZEBRA INVENTARIO ---
+    if (i % 2 !== 0) {
+        tr.style.backgroundColor = '#fdebf3'; // Color Rosado
+    } else {
+        tr.style.backgroundColor = '#ffffff'; // Color Blanco
+    }
+    
     const celdas = [code, name, qty, sizes.pp, sizes.p, sizes.m, sizes.g, sizes.gg, sizes.egg, sizes.exgg, sizes.u];
     celdas.forEach((val, idx) => {
   const td = document.createElement('td');
-  td.textContent = (val===undefined || val===null) ? '' : String(val);
+  // Si es una talla (idx >= 3) y viene 0, mostrar vacío en el PDF
+if (idx >= 3 && (val === 0 || val === "0")) {
+  td.textContent = '';
+} else {
+  td.textContent = (val === undefined || val === null) ? '' : String(val);
+}
+
   aplicarAntiCorte(td);
 
   if (idx === 1) {
@@ -1576,11 +1614,16 @@ if (estado && estado !== '0' && !yaTrae) {
 }
 
 
-
-
     const tr = document.createElement('tr');
     aplicarAntiCorte(tr);
 
+// --- EFECTO ZEBRA DEVOLUCIÓN ---
+    if (i % 2 !== 0) {
+        tr.style.backgroundColor = '#fdebf3'; // Color Rosado
+    } else {
+        tr.style.backgroundColor = '#ffffff'; // Color Blanco
+    }
+    
 // --- celdas de la fila (Devolución) ---
 const td1 = document.createElement('td');
 aplicarAntiCorte(td1);
@@ -2019,6 +2062,8 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
+
 
 
 
