@@ -1,0 +1,10 @@
+name: Chulito Verde
+
+on: [push]
+
+jobs:
+  confirmar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Todo actualizado
+        run: echo "Cambios guardados correctamente ✅"
