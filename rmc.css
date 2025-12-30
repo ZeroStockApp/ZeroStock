@@ -1857,3 +1857,12 @@ input[type="number"],
     gap: 8px !important;
   }
 }
+
+/* Zebra en la tabla del informe */
+#tabla table tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* blanco */
+}
+
+#tabla table tbody tr:nth-child(even) {
+    background-color: #fdebf3; /* rosadito suave */
+}
