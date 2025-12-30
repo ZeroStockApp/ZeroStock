@@ -1,30 +1,33 @@
 function generarPDF() {
-    // 1. Seleccionamos el área del PDF
-    const elemento = document.getElementById('pdf'); 
+    // 1. Seleccionamos el área y el cuerpo de la página
+    const elemento = document.getElementById('pdf');
+    const cuerpo = document.body;
 
-    // 2. Configuramos el nombre con la fecha
+    // 2. ACTIVAMOS el modo PDF (esto es lo que faltaba)
+    cuerpo.classList.add('pdf-full');
+
     const fecha = new Date().toLocaleDateString().replace(/\//g, '-');
     const nombreArchivo = 'Informe_Stock_' + fecha + '.pdf';
 
-    // 3. Configuración optimizada para evitar cortes
     const opciones = {
-        margin: 0, // El margen lo controlamos ahora por CSS para más precisión
+        margin: [10, 5, 10, 5], // Margen: arriba, izquierda, abajo, derecha (en mm)
         filename: nombreArchivo,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
             scale: 2, 
             useCORS: true, 
             letterRendering: true,
-            scrollX: 0,
-            scrollY: 0
+            width: 1050 // Obligamos a capturar un ancho fijo
         },
         jsPDF: {
             unit: 'mm',
             format: 'letter',
-            orientation: 'landscape' // Formato horizontal
+            orientation: 'landscape'
         }
     };
 
-    // 4. Generar y descargar
-    html2pdf().set(opciones).from(elemento).save();
+    // 3. Generamos el PDF y al terminar QUITAMOS el modo PDF
+    html2pdf().set(opciones).from(elemento).save().then(() => {
+        cuerpo.classList.remove('pdf-full');
+    });
 }
