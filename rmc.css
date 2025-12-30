@@ -1896,31 +1896,42 @@ input[type="number"],
 }
 
 @media print {
-  /* 1. Forzamos a que el navegador no invente márgenes extra */
   @page {
+    size: letter landscape; /* Forzamos horizontal en papel carta */
     margin: 0.5cm !important;
   }
 
-  /* 2. Quitamos el zoom que estaba moviendo todo a la derecha */
   body { 
     zoom: normal !important; 
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    font-size: 10pt !important; /* Achicamos la letra general */
   }
 
-  /* 3. El contenedor blanco debe ocupar todo el ancho del papel */
   #contenedor {
     max-width: 100% !important;
     width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
     border: none !important;
     box-shadow: none !important;
-    padding: 0 !important;
   }
 
-  /* 4. Aseguramos que la tabla no se salga del borde derecho */
-  #pdf, table {
+  /* Reducimos el tamaño de la tabla para que quepa */
+  table {
     width: 100% !important;
-    table-layout: auto !important;
+    table-layout: fixed !important; /* Obliga a las columnas a no estirarse */
+    font-size: 9pt !important;     /* Letra de la tabla aún más pequeña */
   }
+
+  th, td {
+    padding: 4px 2px !important;   /* Menos espacio entre celdas */
+    word-wrap: break-word !important;
+  }
+
+  /* Ajustamos anchos específicos para que el nombre del producto no empuje todo */
+  .col-1 { width: 10%; } /* Código */
+  .col-2 { width: 25%; } /* Producto */
+  .col-3 { width: 8%; }  /* Cantidad */
 }
