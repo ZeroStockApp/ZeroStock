@@ -1896,6 +1896,31 @@ input[type="number"],
 }
 
 @media print {
-  body { zoom: 0.95; }
-}
+  /* 1. Forzamos a que el navegador no invente márgenes extra */
+  @page {
+    margin: 0.5cm !important;
+  }
 
+  /* 2. Quitamos el zoom que estaba moviendo todo a la derecha */
+  body { 
+    zoom: normal !important; 
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 3. El contenedor blanco debe ocupar todo el ancho del papel */
+  #contenedor {
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  /* 4. Aseguramos que la tabla no se salga del borde derecho */
+  #pdf, table {
+    width: 100% !important;
+    table-layout: auto !important;
+  }
+}
