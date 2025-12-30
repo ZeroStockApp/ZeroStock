@@ -1892,12 +1892,16 @@ input[type="number"],
   }
 
   /* Ajuste del área del PDF */
-  #pdf, body.pdf-full #pdf {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-  }
+ body.pdf-full #pdf {
+  max-width: 275mm !important;   /* LIMITE REAL para A4 landscape */
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: none !important;
+  overflow: hidden !important;   /* Oculta cualquier desborde */
+  box-sizing: border-box !important;
+}
+
 
   /* Forzamos a que la tabla se encoja para caber en el papel */
   table {
