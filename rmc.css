@@ -1867,60 +1867,31 @@ input[type="number"],
     background-color: #fdebf3; /* rosadito suave */
 }
 
-/* =========================================================
-   FIX IMPRESIÓN/PDF — Evita recortes sin tocar "escala"
-   Pegar AL FINAL del CSS
-   ========================================================= */
-
-/* 1) Le decimos al navegador qué márgenes usar al imprimir.
-      Esto crea “aire” seguro para que NO corte el contenido. */
-@page {
-  size: A4;
-  margin: 10mm; /* puedes dejarlo así: NO es escala, es margen de página */
-}
-
-/* 2) Estilos SOLO cuando se imprime */
+/* =====================================================
+   IMPRESIÓN PARA PAPEL CARTA (Letter)
+   - La impresora usa CARTA, no A4
+   - Evita que se corte el TOTAL abajo
+   - NO usa escala
+   ===================================================== */
 @media print {
 
-  /* Quitamos padding del body (en pantalla tienes padding:30px) para que no empuje
-     el contenido hacia los bordes imprimibles. */
+  @page {
+    size: Letter landscape; /* Papel CARTA horizontal */
+    margin-top: 12mm;
+    margin-left: 10mm;
+    margin-right: 10mm;
+    margin-bottom: 18mm; /* MÁS margen abajo para el TOTAL */
+  }
+
   body {
     margin: 0 !important;
     padding: 0 !important;
-    background: #fff !important;
   }
 
-  /* 3) El contenedor no debe “encajonar” ni meter sombras en impresión */
-  #contenedor {
-    max-width: none !important;
-    width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* 4) CLAVE: en impresión NO uses 200mm fijo.
-        100% se adapta al área imprimible real y evita el corte. */
-  body.pdf-full #pdf {
-    width: 100% !important;     /* <-- reemplaza el 200mm en modo print */
-    margin: 0 !important;
-    padding: 0 !important;      /* evita sumar mm extra que puedan cortar */
-    border: none !important;    /* el borde también suma y puede empujar */
+  #pdf {
     box-sizing: border-box !important;
+    padding-bottom: 6mm !important; /* colchón extra */
     overflow: visible !important;
-  }
-
-  /* 5) Tabla estable (para que no se desborde horizontalmente) */
-  body.pdf-full #pdf table {
-    width: 100% !important;
-    table-layout: fixed !important;
-  }
-
-  /* 6) Seguridad extra: evita que el navegador corte filas “a la mala” */
-  tr, td, th {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
   }
 }
 
