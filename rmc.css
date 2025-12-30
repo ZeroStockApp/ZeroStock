@@ -1933,40 +1933,48 @@ input[type="number"],
   }
 }
 
-/* === AJUSTE MAESTRO PARA EVITAR CORTE DERECHO === */
+/* === AJUSTE DE TABLA ULTRA COMPACTA PARA PDF === */
 body.pdf-full #pdf {
-  width: 260mm !important;      /* Ancho fijo para paisaje (landscape) */
-  max-width: 260mm !important;
+  width: 255mm !important;
+  max-width: 255mm !important;
   margin: 0 auto !important;
-  padding: 5mm !important;      /* Espacio interno de seguridad */
+  padding: 5mm !important;
   background-color: white !important;
   box-sizing: border-box !important;
 }
 
-/* Forzar que la tabla ocupe el 100% de esos 260mm, ni un milímetro más */
 body.pdf-full #pdf table {
   width: 100% !important;
-  table-layout: fixed !important; 
+  table-layout: fixed !important; /* 🔹 Obliga a respetar los anchos de abajo */
   border-collapse: collapse !important;
 }
 
-/* Ajuste de columnas para que no se empujen entre sí */
+/* 1. Columna CÓDIGO (Más angosta) */
+body.pdf-full #pdf table th:nth-child(1),
+body.pdf-full #pdf table td:nth-child(1) { width: 10% !important; }
+
+/* 2. Columna PRODUCTO (La más ancha) */
+body.pdf-full #pdf table th:nth-child(2),
+body.pdf-full #pdf table td:nth-child(2) { 
+  width: 35% !important; 
+  text-align: left !important;
+}
+
+/* 3. Columna TOTAL (Antes Cantidad - Pequeña) */
+body.pdf-full #pdf table th:nth-child(3),
+body.pdf-full #pdf table td:nth-child(3) { width: 7% !important; }
+
+/* 4. Columnas de TALLAS (PP, P, M, G, GG, EGG, EXGG, U) */
+/* Les damos un 6% a cada una (8 columnas x 6% = 48%) */
+body.pdf-full #pdf table th:nth-child(n+4),
+body.pdf-full #pdf table td:nth-child(n+4) { 
+  width: 6% !important; 
+  font-size: 9pt !important;
+}
+
+/* Ajuste general de letra para que nada se empuje */
 body.pdf-full #pdf th, 
 body.pdf-full #pdf td {
-  word-wrap: break-word !important;
-  font-size: 10pt !important;
-  padding: 4px !important;
-}
-
-/* Hacemos las columnas de tallas muy delgadas para dar aire a la derecha */
-body.pdf-full #pdf table th:nth-child(n+4),
-body.pdf-full #pdf table td:nth-child(n+4) {
-  width: 18px !important;
-}
-
-/* Ocultar botones y cosas que estorben en el PDF */
-body.pdf-full #box-botones, 
-body.pdf-full .col-4, 
-body.pdf-full .col-5 {
-  display: none !important;
+  font-size: 9pt !important;
+  padding: 3px 1px !important;
 }
