@@ -1674,15 +1674,14 @@ const esTallas = (tipoInforme && (tipoInforme.value === "1" || tipoInforme.value
 // margen inferior reservado para el pie de página
 const bottomMargin = esTallas ? 14 : 16; // antes 8/12
 
-
 const opt = {
+  // [top, right, bottom, left] en milímetros
   margin: esTallas ? [8, 6, bottomMargin, 6] : [12, 10, bottomMargin, 10],
   filename: buildPdfFilename(),
   image: { type: 'jpeg', quality: 0.98 },
   html2canvas: { scale: 3 },
   jsPDF: { unit: 'mm', format: 'a4', orientation: esTallas ? 'landscape' : 'portrait' },
-  pagebreak: { mode: ['css', 'legacy'] }
-};
+    pagebreak: { mode: ['css', 'legacy'] }
 
 };
 
@@ -2063,9 +2062,6 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
-
-
-
 
 
 
