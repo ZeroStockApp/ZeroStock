@@ -1,36 +1,37 @@
 function generarPDF() {
-    const elemento = document.getElementById('pdf');
-    const cuerpo = document.body;
-    cuerpo.classList.add('pdf-full');
+  const elemento = document.getElementById('pdf');
+  const cuerpo = document.body;
+  cuerpo.classList.add('pdf-full');
 
-    const fecha = new Date().toLocaleDateString().replace(/\//g, '-');
-    const nombreArchivo = 'Informe_Stock_' + fecha + '.pdf';
+  const fecha = new Date().toLocaleDateString().replace(/\//g, '-');
+  const nombreArchivo = 'Informe_Stock_' + fecha + '.pdf';
 
-    const opciones = {
-        margin: [10, 12, 10, 12], // margen arriba, derecha, abajo, izquierda
-        filename: nombreArchivo,
-        image: { type: 'jpeg', quality: 0.98 },
-       html2canvas: { 
-    scale: 1.2,
+  // Capturamos el área visible en una imagen
+  html2canvas(elemento, {
+    scale: 2,
     useCORS: true,
-    letterRendering: true,
-    width: 880, // 🔹 reduce aún más el área capturada
-    scrollX: 0,
-    scrollY: 0
-},
+    letterRendering: true
+  }).then(canvas => {
+    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    const pdf = new jspdf.jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'letter'
+    });
 
-        jsPDF: {
-            unit: 'mm',
-            format: 'letter', // 🔹 siempre Carta
-            orientation: 'landscape'
-        }
-    };
+    const pageWidth = 279.4;  // carta horizontal en mm
+    const pageHeight = 215.9;
+    const margin = 10;        // margen seguro de 10 mm
 
-    html2pdf()
-        .set(opciones)
-        .from(elemento)
-        .save()
-        .then(() => {
-            cuerpo.classList.remove('pdf-full');
-        });
+    const imgWidth = pageWidth - margin * 2;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    // Insertamos la imagen centrada con márgenes reales
+    const x = margin;
+    const y = (pageHeight - imgHeight) / 2;
+
+    pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+    pdf.save(nombreArchivo);
+    cuerpo.classList.remove('pdf-full');
+  });
 }
