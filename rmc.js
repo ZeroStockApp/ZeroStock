@@ -1674,12 +1674,23 @@ const esTallas = (tipoInforme && (tipoInforme.value === "1" || tipoInforme.value
 // margen inferior reservado para el pie de página
 const bottomMargin = esTallas ? 14 : 16; // antes 8/12
 
+  // FIX corte derecha: forzar “viewport” virtual de html2canvas al ancho de la hoja
+const pxPorMm = 96 / 25.4;
+const anchoHojaMm = esTallas ? 297 : 210; // A4 landscape vs portrait (ancho)
+const windowWidthPx = Math.round(anchoHojaMm * pxPorMm);
+
 const opt = {
   // [top, right, bottom, left] en milímetros
   margin: esTallas ? [8, 6, bottomMargin, 6] : [12, 10, bottomMargin, 10],
   filename: buildPdfFilename(),
   image: { type: 'jpeg', quality: 0.98 },
-  html2canvas: { scale: 3 },
+  html2canvas: {
+  scale: 3,
+  windowWidth: windowWidthPx,
+  scrollX: 0,
+  scrollY: 0
+},
+
   jsPDF: { unit: 'mm', format: 'a4', orientation: esTallas ? 'landscape' : 'portrait' },
     pagebreak: { mode: ['css', 'legacy'] }
 
@@ -2062,6 +2073,7 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
 
 
 
