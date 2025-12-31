@@ -688,8 +688,8 @@ body.pdf-full #contenedor {
 }
 
 body.pdf-full #pdf {
-  width: 260mm !important;       /* 🔹 Un poco menos de Letter para evitar cortes */
-  max-width: 260mm !important;
+  width: 240mm !important;       /* 🔹 Un poco menos de Letter para evitar cortes */
+  max-width: 240mm !important;
   margin: 0 auto !important;
   padding: 0 !important;
   border: none !important;
