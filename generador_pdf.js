@@ -1,5 +1,5 @@
 function generarPDF() {
-  const { jsPDF } = window.jspdf;
+  const jsPDF = window.jspdf.jsPDF;
 
   // Creamos el documento Carta horizontal
   const doc = new jsPDF({
@@ -74,3 +74,5 @@ function obtenerTotalProductos() {
   const celda = document.querySelector("#pdf td:last-child");
   return celda ? celda.textContent.trim() : "0";
 }
+
+window.generarPDF = generarPDF;
