@@ -2005,3 +2005,11 @@ body.pdf-full #pdf table td {
     padding: 2px 2px !important;  /* Reduce el espacio dentro de las celdas */
     font-size: 10pt !important;   /* Letra más pequeña, cabe más */
 }
+
+/* Ajuste visual del contenedor PDF */
+#pdf {
+  margin: 0 auto;
+  max-width: 950px;
+  background-color: white;
+  box-sizing: border-box;
+}
