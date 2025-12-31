@@ -9,7 +9,7 @@ function generarPDF() {
     const nombreArchivo = 'Informe_Stock_' + fecha + '.pdf';
 
     const opciones = {
-        margin: [10, 5, 10, 5],
+        margin: [12, 15, 12, 15],
         filename: nombreArchivo,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
