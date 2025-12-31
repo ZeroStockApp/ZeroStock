@@ -1687,18 +1687,31 @@ const opt = {
 
 
    
-   // ✅ Bloque restaurado: mantiene flujo normal y usa la nueva generación de PDF
-try {
-  // Llama a la nueva función jsPDF/autotable
-  generarPDF();
+   function exportarPDFConTallasSiCorresponde() {
+  try {
+    const elementoAExportar = document.getElementById('pdf');
+    if (!elementoAExportar) {
+      alert("No se encontró el contenido para generar el PDF.");
+      return;
+    }
 
-  // Permite continuar la ejecución normal del flujo
-  return true;
+    // 🔹 Compatibilidad: se deja la estructura original aunque ya no use html2pdf
+    const opt = {
+      margin: [10, 10, 10, 10],
+      filename: 'Informe.pdf'
+    };
 
-} catch (error) {
-  console.error("Error al crear PDF:", error);
-  alert("Ocurrió un error al generar el PDF. Revisa la consola para más detalles.");
-  return false;
+    // 🚀 Llamamos a la nueva función de generación
+    generarPDF();
+
+    // ✅ Retorno controlado para que el flujo continúe
+    return true;
+
+  } catch (error) {
+    console.error("Error al crear PDF:", error);
+    alert("Ocurrió un error al generar el PDF. Revisa la consola para más detalles.");
+    return false;
+  }
 }
 
 
@@ -2063,6 +2076,7 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
 
 
 
