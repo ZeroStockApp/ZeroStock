@@ -688,8 +688,8 @@ body.pdf-full #contenedor {
 }
 
 body.pdf-full #pdf {
-  width: 240mm !important;       /* 🔹 Un poco menos de Letter para evitar cortes */
-  max-width: 240mm !important;
+  width: 255mm !important;       /* 🔹 Un poco menos de Letter para evitar cortes */
+  max-width: 255mm !important;
   margin: 0 auto !important;
   padding: 0 !important;
   border: none !important;
@@ -1977,4 +1977,31 @@ body.pdf-full #pdf th,
 body.pdf-full #pdf td {
   font-size: 9pt !important;
   padding: 3px 1px !important;
+}
+
+body.pdf-full #pdf table th:nth-child(1),
+body.pdf-full #pdf table td:nth-child(1) {
+    width: 20mm !important;  /* Código: 2cm */
+    min-width: 20mm !important;
+    max-width: 20mm !important;
+}
+
+body.pdf-full #pdf table th:nth-child(2),
+body.pdf-full #pdf table td:nth-child(2) {
+    width: 75mm !important;  /* Producto: 7.5cm */
+    min-width: 75mm !important;
+    max-width: 75mm !important;
+}
+
+body.pdf-full #pdf table th:nth-child(3),
+body.pdf-full #pdf table td:nth-child(3) {
+    width: 20mm !important;  /* Cantidad: 2cm */
+    min-width: 20mm !important;
+    max-width: 20mm !important;
+}
+
+body.pdf-full #pdf table th,
+body.pdf-full #pdf table td {
+    padding: 2px 2px !important;  /* Reduce el espacio dentro de las celdas */
+    font-size: 10pt !important;   /* Letra más pequeña, cabe más */
 }
