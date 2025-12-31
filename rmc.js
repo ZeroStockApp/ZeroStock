@@ -1686,35 +1686,21 @@ const opt = {
 };
 
 
-   
-   function exportarPDFConTallasSiCorresponde() {
-  try {
-    const elementoAExportar = document.getElementById('pdf');
-    if (!elementoAExportar) {
-      alert("No se encontró el contenido para generar el PDF.");
+    if (typeof html2pdf === 'undefined') {
+      alert('Falta la librería html2pdf.bundle.min.js en el HTML.');
+      ocultarColumna('', 'none');
       return;
     }
 
-    // 🔹 Compatibilidad: se deja la estructura original aunque ya no use html2pdf
-    const opt = {
-      margin: [10, 10, 10, 10],
-      filename: 'Informe.pdf'
-    };
+    html2pdf().set(opt).from(elementoAExportar).toPdf().get('pdf').then(function (pdf) {
+      const totalPages = pdf.internal.getNumberOfPages();
+const pageWidth  = pdf.internal.pageSize.getWidth();
+const pageHeight = pdf.internal.pageSize.getHeight();
+// Ubicamos el pie dentro del margen reservado en el Paso 1
+const footerY = pageHeight - (bottomMargin / 2);
 
-    // 🚀 Llamamos a la nueva función de generación
-    generarPDF();
-
-    // ✅ Retorno controlado para que el flujo continúe
-    return true;
-
-  } catch (error) {
-    console.error("Error al crear PDF:", error);
-    alert("Ocurrió un error al generar el PDF. Revisa la consola para más detalles.");
-    return false;
-  }
-}
-
-
+for (let i = 1; i <= totalPages; i++) {
+  pdf.setPage(i);
 
   // 1) Limpia/“pinta de blanco” el margen inferior por si alguna línea se asomó
   pdf.setFillColor(255, 255, 255);
@@ -2076,10 +2062,6 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
-
-
-
-
 
 
 
