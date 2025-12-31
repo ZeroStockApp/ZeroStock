@@ -1679,6 +1679,11 @@ const pxPorMm = 96 / 25.4;
 const anchoHojaMm = esTallas ? 297 : 210; // A4 landscape vs portrait (ancho)
 const windowWidthPx = Math.round(anchoHojaMm * pxPorMm);
 
+  const extraCapturePx = 80;
+const captureWidthPx = Math.ceil(
+  (elementoAExportar.scrollWidth || elementoAExportar.offsetWidth) + extraCapturePx
+);
+
 const opt = {
   // [top, right, bottom, left] en milímetros
   margin: esTallas ? [8, 6, bottomMargin, 6] : [12, 10, bottomMargin, 10],
@@ -1686,12 +1691,14 @@ const opt = {
   image: { type: 'jpeg', quality: 0.98 },
   html2canvas: {
   scale: 3,
-  windowWidth: windowWidthPx,
+  windowWidth: captureWidthPx,
+  width: captureWidthPx,
   scrollX: 0,
   scrollY: 0
 },
 
-  jsPDF: { unit: 'mm', format: 'a4', orientation: esTallas ? 'landscape' : 'portrait' },
+
+  jsPDF: { unit: 'mm', format: 'letter', orientation: esTallas ? 'landscape' : 'portrait' },
     pagebreak: { mode: ['css', 'legacy'] }
 
 };
@@ -2073,6 +2080,7 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
 
 
 
