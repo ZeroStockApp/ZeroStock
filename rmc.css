@@ -1949,67 +1949,69 @@ body.pdf-full #pdf table {
   border-collapse: collapse !important;
 }
 
-/* 1. Columna CÓDIGO (Más angosta) */
-body.pdf-full #pdf table th:nth-child(1),
-body.pdf-full #pdf table td:nth-child(1) { width: 10% !important; }
+/* === ANCHOS PRECISOS DE CADA COLUMNA === */
 
-/* 2. Columna PRODUCTO (La más ancha) */
+/* 1️⃣ CÓDIGO */
+body.pdf-full #pdf table th:nth-child(1),
+body.pdf-full #pdf table td:nth-child(1) {
+  width: 20mm !important;   /* Código = 2 cm */
+  min-width: 20mm !important;
+  max-width: 20mm !important;
+}
+
+/* 2️⃣ PRODUCTO */
 body.pdf-full #pdf table th:nth-child(2),
-body.pdf-full #pdf table td:nth-child(2) { 
-  width: 35% !important; 
+body.pdf-full #pdf table td:nth-child(2) {
+  width: 70mm !important;   /* Producto = 7 cm */
+  min-width: 70mm !important;
+  max-width: 70mm !important;
   text-align: left !important;
 }
 
-/* 3. Columna TOTAL (Antes Cantidad - Pequeña) */
-body.pdf-full #pdf table th:nth-child(3),
-body.pdf-full #pdf table td:nth-child(3) { width: 7% !important; }
-
-/* 4. Columnas de TALLAS (PP, P, M, G, GG, EGG, EXGG, U) */
-/* Les damos un 6% a cada una (8 columnas x 6% = 48%) */
-body.pdf-full #pdf table th:nth-child(n+4),
-body.pdf-full #pdf table td:nth-child(n+4) { 
-  width: 6% !important; 
-  font-size: 9pt !important;
-}
-
-/* Ajuste general de letra para que nada se empuje */
-body.pdf-full #pdf th, 
-body.pdf-full #pdf td {
-  font-size: 9pt !important;
-  padding: 3px 1px !important;
-}
-
-body.pdf-full #pdf table th:nth-child(1),
-body.pdf-full #pdf table td:nth-child(1) {
-    width: 20mm !important;  /* Código: 2cm */
-    min-width: 20mm !important;
-    max-width: 20mm !important;
-}
-
-body.pdf-full #pdf table th:nth-child(2),
-body.pdf-full #pdf table td:nth-child(2) {
-    width: 75mm !important;  /* Producto: 7.5cm */
-    min-width: 75mm !important;
-    max-width: 75mm !important;
-}
-
+/* 3️⃣ CANTIDAD */
 body.pdf-full #pdf table th:nth-child(3),
 body.pdf-full #pdf table td:nth-child(3) {
-    width: 20mm !important;  /* Cantidad: 2cm */
-    min-width: 20mm !important;
-    max-width: 20mm !important;
+  width: 15mm !important;   /* Cantidad = 1.5 cm */
+  min-width: 15mm !important;
+  max-width: 15mm !important;
 }
 
-body.pdf-full #pdf table th,
-body.pdf-full #pdf table td {
-    padding: 2px 2px !important;  /* Reduce el espacio dentro de las celdas */
-    font-size: 10pt !important;   /* Letra más pequeña, cabe más */
+/* 4️⃣ COLUMNAS DE TALLAS (PP, P, M, G, GG, EGG, EXGG, U) */
+/* 🔸 Ajustadas para ocupar el espacio restante de forma equilibrada */
+body.pdf-full #pdf table th:nth-child(4),
+body.pdf-full #pdf table td:nth-child(4),
+body.pdf-full #pdf table th:nth-child(5),
+body.pdf-full #pdf table td:nth-child(5),
+body.pdf-full #pdf table th:nth-child(6),
+body.pdf-full #pdf table td:nth-child(6),
+body.pdf-full #pdf table th:nth-child(7),
+body.pdf-full #pdf table td:nth-child(7),
+body.pdf-full #pdf table th:nth-child(8),
+body.pdf-full #pdf table td:nth-child(8),
+body.pdf-full #pdf table th:nth-child(9),
+body.pdf-full #pdf table td:nth-child(9),
+body.pdf-full #pdf table th:nth-child(10),
+body.pdf-full #pdf table td:nth-child(10),
+body.pdf-full #pdf table th:nth-child(11),
+body.pdf-full #pdf table td:nth-child(11) {
+  width: 15mm !important; /* Cada una ≈ 1.5 cm para cubrir bien el ancho total */
+  text-align: center !important;
+  font-size: 9pt !important;
 }
 
-/* Ajuste visual del contenedor PDF */
+/* === AJUSTE GENERAL === */
+body.pdf-full #pdf th,
+body.pdf-full #pdf td {
+  font-size: 9pt !important;
+  padding: 2px 2px !important;
+  word-wrap: break-word !important;
+}
+
+/* === CONTENEDOR VISUAL === */
 #pdf {
   margin: 0 auto;
   max-width: 950px;
   background-color: white;
   box-sizing: border-box;
 }
+
