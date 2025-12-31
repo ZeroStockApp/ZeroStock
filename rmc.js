@@ -1687,13 +1687,20 @@ const opt = {
 
 
    
-    // 🚀 NUEVA VERSIÓN SIN HTML2PDF — Compatible con jsPDF/autotable
+   // ✅ Bloque restaurado: mantiene flujo normal y usa la nueva generación de PDF
 try {
-  generarPDF(); // Llama a la nueva función que crea el PDF correctamente
+  // Llama a la nueva función jsPDF/autotable
+  generarPDF();
+
+  // Permite continuar la ejecución normal del flujo
+  return true;
+
 } catch (error) {
   console.error("Error al crear PDF:", error);
   alert("Ocurrió un error al generar el PDF. Revisa la consola para más detalles.");
+  return false;
 }
+
 
 
   // 1) Limpia/“pinta de blanco” el margen inferior por si alguna línea se asomó
@@ -2056,6 +2063,7 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
 
 
 
