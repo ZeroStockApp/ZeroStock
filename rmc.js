@@ -1686,12 +1686,7 @@ const opt = {
 };
 
 
-    if (typeof html2pdf === 'undefined') {
-      alert('Falta la librería html2pdf.bundle.min.js en el HTML.');
-      ocultarColumna('', 'none');
-      return;
-    }
-
+   
     html2pdf().set(opt).from(elementoAExportar).toPdf().get('pdf').then(function (pdf) {
       const totalPages = pdf.internal.getNumberOfPages();
 const pageWidth  = pdf.internal.pageSize.getWidth();
@@ -2062,6 +2057,7 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
 
 
 
