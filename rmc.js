@@ -1687,15 +1687,14 @@ const opt = {
 
 
    
-    html2pdf().set(opt).from(elementoAExportar).toPdf().get('pdf').then(function (pdf) {
-      const totalPages = pdf.internal.getNumberOfPages();
-const pageWidth  = pdf.internal.pageSize.getWidth();
-const pageHeight = pdf.internal.pageSize.getHeight();
-// Ubicamos el pie dentro del margen reservado en el Paso 1
-const footerY = pageHeight - (bottomMargin / 2);
+    // 🚀 NUEVA VERSIÓN SIN HTML2PDF — Compatible con jsPDF/autotable
+try {
+  generarPDF(); // Llama a la nueva función que crea el PDF correctamente
+} catch (error) {
+  console.error("Error al crear PDF:", error);
+  alert("Ocurrió un error al generar el PDF. Revisa la consola para más detalles.");
+}
 
-for (let i = 1; i <= totalPages; i++) {
-  pdf.setPage(i);
 
   // 1) Limpia/“pinta de blanco” el margen inferior por si alguna línea se asomó
   pdf.setFillColor(255, 255, 255);
@@ -2057,6 +2056,7 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
 
 
 
