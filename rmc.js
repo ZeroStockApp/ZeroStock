@@ -329,33 +329,76 @@ function validarItem(codigo, nombre, cantidad)
 {
     var numeroFilas = tbody.rows.length;
 
-    if(numeroFilas > 0)
+    if (numeroFilas > 0)
     {
-        var index;
+        var index = -1;
         var duplicado = 0;
 
-        for(var i = 0; i < numeroFilas; i++)
+        for (var i = 0; i < numeroFilas; i++)
         {
             var codigoFila = tbody.rows[i].cells[0].innerHTML;
             var estadoFila = tbody.rows[i].cells[5].innerHTML;
 
-            if(codigoFila == codigo && estadoFila == '0')
+            if (codigoFila == codigo && estadoFila == '0')
             {
                 index = i;
-                duplicado++;                    
-            }              
+                duplicado++;
+            }
         }
 
-        if(duplicado > 0) 
+        if (duplicado > 0 && index >= 0)
         {
             var celdaCantidad = tbody.rows[index].cells[2];
-            var nuevaCantidad = parseInt(celdaCantidad.innerHTML) + parseInt(cantidad);
+
+            // Sumar cantidad total
+            var nuevaCantidad = parseInt(celdaCantidad.innerHTML || "0", 10)
+                              + parseInt(cantidad || "0", 10);
             celdaCantidad.innerHTML = nuevaCantidad.toString();
+
+            // Sumar tallas
+            if (tipoInforme.value === "1" || tipoInforme.value === "3")
+            {
+                const acumulado = { pp:0, p:0, m:0, g:0, gg:0, egg:0, exgg:0, u:0 };
+
+                const dataPrev = celdaCantidad.getAttribute("data-tallas");
+                if (dataPrev)
+                {
+                    dataPrev.split(", ").forEach(par => {
+                        const parts = par.split(": ");
+                        const talla = (parts[0] || "").trim().toLowerCase();
+                        const valor = parseInt(parts[1] || "0", 10) || 0;
+                        if (acumulado.hasOwnProperty(talla)) {
+                            acumulado[talla] += valor;
+                        }
+                    });
+                }
+
+                const inputsTalla = document.querySelectorAll('.talla-input');
+                inputsTalla.forEach(input => {
+                    const val = parseInt(input.value, 10) || 0;
+                    const nombreTalla = (input.previousElementSibling?.innerText || "")
+                                        .trim().toLowerCase();
+                    if (val > 0 && acumulado.hasOwnProperty(nombreTalla)) {
+                        acumulado[nombreTalla] += val;
+                    }
+                });
+
+                const orden = ["pp","p","m","g","gg","egg","exgg","u"];
+                const detalle = [];
+                orden.forEach(k => {
+                    if (acumulado[k] > 0) detalle.push(`${k.toUpperCase()}: ${acumulado[k]}`);
+                });
+
+                if (detalle.length > 0) {
+                    celdaCantidad.dataset.tallas = detalle.join(", ");
+                } else {
+                    delete celdaCantidad.dataset.tallas;
+                }
+            }
+
             sumarItems();
             limpiarDatos();
             limpiarTallas();
-
-            
         }
         else
         {
@@ -365,11 +408,10 @@ function validarItem(codigo, nombre, cantidad)
     else
     {
         agregarItem(codigo, nombre, cantidad, '0');
-
         limpiarTallas();
-
-    } 
+    }
 }
+
 botonAgregar.addEventListener('click', function() {
    if (!exigirDistribuidor()) return;
 
@@ -958,7 +1000,7 @@ document.body.classList.add('pdf-full');
 const esTallas = (tipoInforme.value === "1" || tipoInforme.value === "3");
 // === (1) MÁRGENES BASE PARA PDF (según tallas) ===
 const bottomMargin = esTallas ? 14 : 16; // si luego quieres 16/18, cambia aquí
-const PDF_MARGIN_TALLAS = [8, 12, bottomMargin, 12];
+const PDF_MARGIN_TALLAS = [8, 6, bottomMargin, 6];
 const PDF_MARGIN_NORMAL = [12, 10, bottomMargin, 10];
 
 
@@ -996,7 +1038,7 @@ const opt = {
     }
   },
 
-  jsPDF: { unit: 'mm', format: 'a4', orientation: esTallas ? 'landscape' : 'portrait' },
+jsPDF: { unit: 'mm', format: esTallas ? 'letter' : 'a4', orientation: esTallas ? 'landscape' : 'portrait' },
   pagebreak: { mode: ['css','legacy'] }
 };
 
@@ -1680,7 +1722,7 @@ const opt = {
   filename: buildPdfFilename(),
   image: { type: 'jpeg', quality: 0.98 },
   html2canvas: { scale: 3 },
-  jsPDF: { unit: 'mm', format: 'a4', orientation: esTallas ? 'landscape' : 'portrait' },
+jsPDF: { unit: 'mm', format: esTallas ? 'letter' : 'a4', orientation: esTallas ? 'landscape' : 'portrait' },
     pagebreak: { mode: ['css', 'legacy'] }
 
 };
@@ -2062,6 +2104,8 @@ document.addEventListener("DOMContentLoaded", function() {
   opciones.forEach(op => select.appendChild(op));
   select.value = ""; // Fuerza que quede sin selección al terminar de ordenar
 });
+
+
 
 
 
